@@ -1,0 +1,72 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# AI Context Documentation (for local AI assistance)
+another_flushbar_docs.md
+auto_size_text.md
+flutter_local_notifications_docs.md
+notification_setup_guide.md
+posthog_docs.md
+
+# Sensitive Android signing files
+*.jks
+android/key.properties
+
+# PostHog configuration (contains API keys)
+android/posthog.properties
+
+# App secrets configuration (contains API keys and sensitive IDs)
+lib/config/app_secrets.dart
+
+# Legal and internal documentation (not for public repository)
+terms-conditions-md.md
+privacy-policy-md.md
+nostr-post-response.md
+
+# Build and development scripts (internal tools)
+generate-symbols.sh
+en_check_alignment_elf.sh

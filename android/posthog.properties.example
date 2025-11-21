@@ -1,0 +1,7 @@
+# PostHog Analytics Configuration
+# Copy this file to posthog.properties and fill in your actual values
+# The posthog.properties file is gitignored and should NEVER be committed
+
+POSTHOG_API_KEY=phc_YOUR_API_KEY_HERE
+POSTHOG_HOST=https://eu.i.posthog.com
+
