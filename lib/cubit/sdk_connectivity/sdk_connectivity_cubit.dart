@@ -21,6 +21,14 @@ class SdkConnectivityCubit extends Cubit<SdkConnectivityState> {
     required this.nwcNdkSDK,
   }) : super(SdkConnectivityState.disconnected);
 
+  /// Checks if the error is an UNAUTHORIZED error indicating the connection
+  /// was removed from the wallet app.
+  bool _isUnauthorizedError(Object error) {
+    final String errorString = error.toString().toLowerCase();
+    return errorString.contains('unauthorized') ||
+        errorString.contains('pubkey not connected to wallet');
+  }
+
   Future<void> registerOrRestoreConnection({
     required String connectionURI,
   }) async {
@@ -42,6 +50,13 @@ class SdkConnectivityCubit extends Cubit<SdkConnectivityState> {
         throw Exception('Failed to restore connectionURI.');
       }
     } catch (e) {
+      // If it's an UNAUTHORIZED error, don't retry - state already set to unauthorized
+      if (_isUnauthorizedError(e)) {
+        _logger.warning(
+          'Connection unauthorized. User needs to set up new connection.',
+        );
+        return;
+      }
       _logger.warning(
         'Failed to reconnect. Retrying when network connection is detected.',
       );
@@ -71,6 +86,17 @@ class SdkConnectivityCubit extends Cubit<SdkConnectivityState> {
         'Error connecting to the connection URI: $connectionURI',
         e,
       );
+
+      // If it's an UNAUTHORIZED error, emit unauthorized state
+      // This happens when the user removes the connection from their wallet app
+      if (_isUnauthorizedError(e)) {
+        _logger.warning(
+          'UNAUTHORIZED error detected. Connection was removed from wallet.',
+        );
+        emit(SdkConnectivityState.unauthorized);
+        rethrow;
+      }
+
       emit(SdkConnectivityState.disconnected);
       rethrow;
     }

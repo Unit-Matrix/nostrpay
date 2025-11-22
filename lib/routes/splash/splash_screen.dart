@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logging/logging.dart';
 import 'package:nostr_pay_kids/component_library/component_library.dart';
+import 'package:nostr_pay_kids/cubit/account/onboarding_preferences.dart';
 import 'package:nostr_pay_kids/cubit/connectivity/connectivity_cubit.dart';
 import 'package:nostr_pay_kids/cubit/sdk_connectivity/sdk_connectivity_cubit.dart';
 import 'package:nostr_pay_kids/cubit/sdk_connectivity/sdk_connectivity_state.dart';
+import 'package:nostr_pay_kids/routes/initial_walkthrough/code_entry_screen.dart';
 import 'package:nostr_pay_kids/services/service_injector.dart';
+
+final Logger _logger = Logger('SplashScreen');
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required this.isOnboardingComplete});
@@ -105,6 +110,30 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  Future<void> _setupNewConnection() async {
+    if (mounted && !_hasNavigated) {
+      _hasNavigated = true;
+      _connectionTimeoutTimer?.cancel();
+
+      // Clear any remaining credentials and reset onboarding
+      try {
+        final injector = ServiceInjector();
+        await injector.credentialsManager.deleteSecret();
+        await OnboardingPreferences.setOnboardingComplete(false);
+      } catch (e) {
+        // Log but don't block navigation
+        _logger.info('Error clearing credentials: $e');
+      }
+
+      // Navigate to code entry screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const CodeEntryScreen(showBackButton: false),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -183,13 +212,16 @@ class _SplashScreenState extends State<SplashScreen> {
                     sdkState == SdkConnectivityState.connecting;
                 final bool isDisconnected =
                     sdkState == SdkConnectivityState.disconnected;
+                final bool isUnauthorized =
+                    sdkState == SdkConnectivityState.unauthorized;
 
                 // Show error if no internet, connection failed after timeout, or disconnected with internet
                 // Don't show error if we're currently retrying (show loading instead)
                 final bool showError = (!hasInternet ||
                         (_showConnectionError && isDisconnected) ||
                         (isDisconnected && !isConnecting && hasInternet)) &&
-                    !_isRetrying;
+                    !_isRetrying &&
+                    !isUnauthorized;
 
                 return Scaffold(
                   backgroundColor: AppColors.ufoBeamColor,
@@ -204,7 +236,46 @@ class _SplashScreenState extends State<SplashScreen> {
                             width: MediaQuery.of(context).size.width / 1.5,
                           ),
                           const SizedBox(height: 40),
-                          if (showError) ...[
+                          if (isUnauthorized) ...[
+                            Icon(
+                              Icons.link_off_rounded,
+                              size: 48,
+                              color: theme.colorScheme.error,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Connection Removed',
+                              style: textTheme.headlineSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 32),
+                              child: Text(
+                                'Your NWC connection has been removed from your wallet app. Please set up a new connection to continue.',
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color:
+                                      AppColors.textBody.withValues(alpha: 0.7),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: PrimaryButton(
+                                text: 'Set Up New Connection',
+                                onPressed: _setupNewConnection,
+                                fontSize: 16,
+                                height: 50,
+                                backgroundColor: AppColors.primary,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 16,
+                                ),
+                              ),
+                            ),
+                          ] else if (showError) ...[
                             Icon(
                               Icons.wifi_off_rounded,
                               size: 48,

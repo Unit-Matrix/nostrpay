@@ -63,10 +63,7 @@ android/posthog.properties
 lib/config/app_secrets.dart
 
 # Legal and internal documentation (not for public repository)
-terms-conditions-md.md
-privacy-policy-md.md
-nostr-post-response.md
-primal_wallet_connection_script_final.md
+md/
 
 # Build and development scripts (internal tools)
 generate-symbols.sh

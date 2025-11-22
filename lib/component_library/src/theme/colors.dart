@@ -24,4 +24,14 @@ class AppColors {
   static const Color textBody = Color(0xFF2D3748); // Dark gray for body text
 
   static const Color ufoBeamColor = Color(0xFFFFE274); // Golden yellow
+
+  static const Color aqua = Color(0xFF34E1FF);
+  static const Color honeySuckle = Color(0xFFD2FF85);
+  static const Color vaniliaIce = Color(0xFFF3D9EA);
+  static const Color anakiwa = Color(0xFF7CD4FF);
+  static const Color dandelion = Color(0xFFFCDC5A);
+  static const Color spindle = Color(0xFFB7C5EB);
+  static const Color canry = Color(0xFFE2FF6D);
+  static const Color pinkSalmon = Color(0xFFFF8EB5);
+  static const Color goldSand = Color(0xFFE3C38C);
 }

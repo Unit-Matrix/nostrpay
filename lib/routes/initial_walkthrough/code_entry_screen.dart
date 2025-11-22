@@ -13,7 +13,8 @@ import 'package:nostr_pay_kids/services/service_injector.dart';
 import 'success_screen.dart';
 
 class CodeEntryScreen extends StatefulWidget {
-  const CodeEntryScreen({super.key});
+  const CodeEntryScreen({super.key, this.showBackButton = true});
+  final bool showBackButton;
 
   @override
   State<CodeEntryScreen> createState() => _CodeEntryScreenState();
@@ -174,6 +175,7 @@ class _CodeEntryScreenState extends State<CodeEntryScreen> {
     return AppPageScaffold(
       title: 'Enter Magic Code',
       centerTitle: true,
+      showBackButton: widget.showBackButton,
       actions: [
         IconButton(
           onPressed: _showInfoDialog,

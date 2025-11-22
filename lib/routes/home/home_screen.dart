@@ -203,10 +203,9 @@ class _HomeScreenState extends State<HomeScreen>
 
                         if (currencyState.rates.isNotEmpty) {
                           // ... your fiat calculation logic
-                          final fiatValue =
-                              (accountState.balance / 100000000) *
-                              (currencyState.rates[currencyState
-                                      .selectedFiat] ??
+                          final fiatValue = (accountState.balance / 100000000) *
+                              (currencyState
+                                      .rates[currencyState.selectedFiat] ??
                                   0);
                           fiatBalanceText =
                               "${_fiatSymbol(currencyState.selectedFiat)}${fiatValue.toStringAsFixed(2)}";
@@ -438,10 +437,9 @@ class _HomeScreenState extends State<HomeScreen>
     final int usedBudget = budgetResponse?.userBudgetSats ?? 0;
     final bool hasInfiniteBudget = budgetLimit == 0 && usedBudget == 0;
     final int satsLeft = hasInfiniteBudget ? 0 : (budgetLimit - usedBudget);
-    final double budgetProgress =
-        hasInfiniteBudget
-            ? 1.0
-            : budgetLimit > 0
+    final double budgetProgress = hasInfiniteBudget
+        ? 1.0
+        : budgetLimit > 0
             ? (usedBudget / budgetLimit).clamp(0.0, 1.0)
             : 0.0;
 
@@ -453,8 +451,7 @@ class _HomeScreenState extends State<HomeScreen>
     } else {
       if (_showFiatEquivalent && currencyState.rates.isNotEmpty) {
         // Show fiat equivalent
-        final fiatValue =
-            (satsLeft / 100000000) *
+        final fiatValue = (satsLeft / 100000000) *
             (currencyState.rates[currencyState.selectedFiat] ?? 0);
         displayText =
             'You have ${_fiatSymbol(currencyState.selectedFiat)}${fiatValue.toStringAsFixed(2)} left to spend!';

@@ -10,6 +10,7 @@ class AppPageScaffold extends StatelessWidget {
   final Future<void> Function()? onRefresh;
   final Widget? footer; // NEW: Add the footer parameter
   final bool centerTitle; // Simplified the name
+  final bool showBackButton; // Control back button visibility
 
   const AppPageScaffold({
     super.key,
@@ -19,6 +20,7 @@ class AppPageScaffold extends StatelessWidget {
     this.onRefresh,
     this.footer,
     this.centerTitle = false, // Default to the collapsing style
+    this.showBackButton = true, // Default to showing back button
   });
 
   @override
@@ -32,21 +34,20 @@ class AppPageScaffold extends StatelessWidget {
           expandedHeight: 120.0,
           backgroundColor: AppColors.background,
           surfaceTintColor: Colors.transparent,
-          automaticallyImplyLeading: true,
-          leading: BackButtonIcon(),
+          automaticallyImplyLeading: showBackButton,
+          leading: showBackButton ? BackButtonIcon() : null,
           actions: actions,
           centerTitle: centerTitle,
           flexibleSpace: FlexibleSpaceBar(
             // Use a ternary operator to switch between padding styles
-            titlePadding:
-                centerTitle
-                    ? const EdgeInsets.only(
-                      bottom: 16,
-                    ) // Padding for centered title
-                    : const EdgeInsetsDirectional.only(
-                      start: 72.0,
-                      bottom: 16.0,
-                    ), // Padding for left-aligned title
+            titlePadding: centerTitle
+                ? const EdgeInsets.only(
+                    bottom: 16,
+                  ) // Padding for centered title
+                : const EdgeInsetsDirectional.only(
+                    start: 72.0,
+                    bottom: 16.0,
+                  ), // Padding for left-aligned title
             // Use the boolean to set the alignment
             centerTitle: centerTitle,
             title: Text(
@@ -69,15 +70,14 @@ class AppPageScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body:
-          onRefresh != null
-              ? RefreshIndicator(
-                onRefresh: onRefresh!,
-                color: AppColors.primary,
-                backgroundColor: Colors.white,
-                child: scrollView,
-              )
-              : scrollView,
+      body: onRefresh != null
+          ? RefreshIndicator(
+              onRefresh: onRefresh!,
+              color: AppColors.primary,
+              backgroundColor: Colors.white,
+              child: scrollView,
+            )
+          : scrollView,
       bottomNavigationBar: footer != null ? SafeArea(child: footer!) : null,
     );
   }
