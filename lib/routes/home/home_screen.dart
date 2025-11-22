@@ -13,6 +13,7 @@ import 'package:nostr_pay_kids/handlers/network_connectivity_handler/network_con
 import 'package:nostr_pay_kids/routes/receive/receive_intro_screen.dart';
 import 'package:nostr_pay_kids/routes/send/send_intro_screen.dart';
 import 'package:nostr_pay_kids/routes/home/history_screen.dart';
+import 'package:nostr_pay_kids/routes/home/tools_dialog.dart';
 import 'package:nostr_pay_kids/routes/settings/settings_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nostr_pay_kids/cubit/account/account_cubit.dart';
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen>
                             width: 2,
                           ),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Icon(
                             Icons.settings,
                             color: AppColors.primary,
@@ -291,43 +292,52 @@ class _HomeScreenState extends State<HomeScreen>
 
                 const SizedBox(height: 16),
 
-                IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      // Send Sats
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Icons.send,
-                          label: 'Send Sats',
-                          color: AppColors.secondary,
-                          onTap: _sendSats,
-                          theme: theme,
-                        ),
+                Row(
+                  children: [
+                    // Send Sats
+                    Expanded(
+                      child: _buildActionButton(
+                        icon: Icons.send,
+                        label: 'Send',
+                        color: AppColors.secondary,
+                        onTap: _sendSats,
+                        theme: theme,
                       ),
-                      const SizedBox(width: 12),
-                      // Receive Sats
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Icons.qr_code,
-                          label: 'Receive Sats',
-                          color: AppColors.accent,
-                          onTap: _receiveSats,
-                          theme: theme,
-                        ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Receive Sats
+                    Expanded(
+                      child: _buildActionButton(
+                        icon: Icons.qr_code,
+                        label: 'Receive',
+                        color: AppColors.accent,
+                        onTap: _receiveSats,
+                        theme: theme,
                       ),
-                      const SizedBox(width: 12),
-                      // Transactions
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Icons.history,
-                          label: 'History',
-                          color: AppColors.primary,
-                          onTap: _viewTransactions,
-                          theme: theme,
-                        ),
+                    ),
+                    const SizedBox(width: 8),
+                    // History
+                    Expanded(
+                      child: _buildActionButton(
+                        icon: Icons.history,
+                        label: 'History',
+                        color: AppColors.primary,
+                        onTap: _viewTransactions,
+                        theme: theme,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Tools
+                    Expanded(
+                      child: _buildActionButton(
+                        icon: Icons.adjust_sharp,
+                        label: 'Tools',
+                        color: AppColors.warning,
+                        onTap: _showToolsDialog,
+                        theme: theme,
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 24),
@@ -389,6 +399,10 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void _showToolsDialog() {
+    ToolsDialog.show(context);
+  }
+
   Widget _buildActionButton({
     required IconData icon,
     required String label,
@@ -399,17 +413,21 @@ class _HomeScreenState extends State<HomeScreen>
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        constraints: const BoxConstraints(minHeight: 80),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
         decoration: theme.containerTheme.actionButtonContainer(color),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: Colors.white, size: 24),
+              child: Icon(icon, color: Colors.white, size: 20),
             ),
             const SizedBox(height: 8),
             Text(
@@ -417,9 +435,11 @@ class _HomeScreenState extends State<HomeScreen>
               style: theme.textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w700,
                 color: AppColors.textBody,
-                fontSize: 12,
+                fontSize: 11,
               ),
               textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
