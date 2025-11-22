@@ -35,9 +35,9 @@ class NWCNdkSDK {
     try {
       _instance = ndk.Ndk.emptyBootstrapRelaysConfig();
 
-      // Check if connectionURI contains relay.primal.net
-      final bool isPrimalRelay =
-          connectionURI.contains('wss://relay.primal.net');
+      // Check if connectionURI contains nwc.primal.net or relay.primal.net
+      final bool isPrimalRelay = connectionURI.contains('nwc.primal.net') ||
+          connectionURI.contains('relay.primal.net');
 
       if (isPrimalRelay) {
         _nwcConnection = await _instance.nwc.connect(
@@ -161,9 +161,8 @@ class NWCNdkSDK {
 
   Future<void> _getBalance(ndk.NwcConnection connection) async {
     _logger.info('Getting balance');
-    final ndk.GetBalanceResponse balance = await _instance.nwc.getBalance(
-      connection,
-    );
+    final ndk.GetBalanceResponse balance =
+        await _instance.nwc.getBalance(connection);
     _balanceController.add(balance);
   }
 

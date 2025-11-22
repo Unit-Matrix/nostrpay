@@ -1,7 +1,7 @@
 name: nostr_pay_kids
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.0.0+7
+version: 1.0.1+9
 
 environment:
   sdk: ">=3.6.1 <4.0.0"
@@ -18,12 +18,12 @@ dependencies:
   google_fonts: ^6.2.1
   hydrated_bloc: ^10.0.0
   logging: ^1.3.0
-  ndk: ^0.5.1
-  # ndk:
-  #   git:
-  #     url: https://github.com/relaystr/ndk
-  #     path: packages/ndk
-  #     ref: nwc-connect-timeout
+  # ndk: ^0.5.1
+  ndk:
+    git:
+      url: https://github.com/relaystr/ndk
+      path: packages/ndk
+      ref: nwc-connect-timeout
   path: ^1.9.1
   path_provider: ^2.1.5
   posthog_flutter: ^4.0.0
