@@ -6,5 +6,6 @@ export 'src/back_button_app_bar.dart';
 export 'src/loader.dart';
 export 'src/primary_button.dart';
 export 'src/flushbar_helper.dart';
+export 'src/dialog_helper.dart';
 export 'src/app_page_scaffold.dart';
 export 'src/transparent_page_route.dart';

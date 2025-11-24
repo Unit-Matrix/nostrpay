@@ -50,6 +50,10 @@ dependencies:
   timezone: ^0.10.1
   url_launcher: ^6.3.2
   flutter_inappwebview: ^6.1.5
+  cdk_flutter:
+    git:
+      url: https://github.com/cashubtc/cdk_flutter.git
+  bip39: ^1.0.6
 
 dev_dependencies:
   flutter_test:

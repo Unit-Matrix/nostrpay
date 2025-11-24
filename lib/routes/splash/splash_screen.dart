@@ -9,7 +9,10 @@ import 'package:nostr_pay_kids/cubit/account/onboarding_preferences.dart';
 import 'package:nostr_pay_kids/cubit/connectivity/connectivity_cubit.dart';
 import 'package:nostr_pay_kids/cubit/sdk_connectivity/sdk_connectivity_cubit.dart';
 import 'package:nostr_pay_kids/cubit/sdk_connectivity/sdk_connectivity_state.dart';
+import 'package:nostr_pay_kids/cubit/ecash/ecash_cubit.dart';
+import 'package:nostr_pay_kids/cubit/ecash/ecash_state.dart';
 import 'package:nostr_pay_kids/routes/initial_walkthrough/code_entry_screen.dart';
+import 'package:nostr_pay_kids/routes/offline_cash/ecash_home_screen.dart';
 import 'package:nostr_pay_kids/services/service_injector.dart';
 
 final Logger _logger = Logger('SplashScreen');
@@ -131,6 +134,29 @@ class _SplashScreenState extends State<SplashScreen> {
           builder: (context) => const CodeEntryScreen(showBackButton: false),
         ),
       );
+    }
+  }
+
+  Future<void> _navigateToEcash(BuildContext context) async {
+    if (mounted && !_hasNavigated) {
+      _hasNavigated = true;
+      _connectionTimeoutTimer?.cancel();
+
+      // Navigate directly to EcashHomeScreen without initializing CDK
+      // CDK initialization is only needed for creating new Ecash tokens,
+      // which requires internet anyway. Viewing/using existing Ecash items
+      // works offline using the hydrated state.
+      // Using push instead of pushReplacement so user can navigate back
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const EcashHomeScreen(),
+        ),
+      );
+
+      // Reset _hasNavigated when user pops back so they can navigate again
+      if (mounted) {
+        _hasNavigated = false;
+      }
     }
   }
 
@@ -306,18 +332,56 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(24),
-                              child: PrimaryButton(
-                                text: 'Retry Connection',
-                                onPressed:
-                                    _isRetrying ? null : _retryConnection,
-                                isLoading: _isRetrying,
-                                fontSize: 16,
-                                height: 50, // Keep height for consistency
-                                backgroundColor: AppColors.primary,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 16,
-                                ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PrimaryButton(
+                                    text: 'Retry Connection',
+                                    onPressed:
+                                        _isRetrying ? null : _retryConnection,
+                                    isLoading: _isRetrying,
+                                    fontSize: 16,
+                                    height: 50, // Keep height for consistency
+                                    backgroundColor: AppColors.primary,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 32,
+                                      vertical: 16,
+                                    ),
+                                  ),
+                                  // Show "Use Ecash" option if user has Ecash items
+                                  BlocBuilder<EcashCubit, EcashState>(
+                                    builder: (context, ecashState) {
+                                      final hasEcashItems =
+                                          ecashState.ecashItems.isNotEmpty;
+                                      if (!hasEcashItems) {
+                                        return const SizedBox.shrink();
+                                      }
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            _navigateToEcash(context);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Use Ecash',
+                                                style: textTheme.bodyLarge,
+                                              ),
+                                              Icon(
+                                                Icons.arrow_forward_ios,
+                                                color: AppColors.textPrimary,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ] else if (isConnecting || _isRetrying) ...[

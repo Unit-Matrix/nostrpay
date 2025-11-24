@@ -4,6 +4,7 @@ import 'analytics_service.dart';
 import 'app_version_service.dart';
 import 'credentials_manager.dart';
 import 'device_client.dart';
+import 'ecash_cdk_sdk.dart';
 import 'keychain.dart';
 import 'nostrpay_logger.dart';
 import 'notification_service.dart';
@@ -14,6 +15,7 @@ class ServiceInjector {
   static ServiceInjector? _injector;
 
   NWCNdkSDK? _nwcNdkSDK;
+  EcashCdkSDK? _ecashCdkSDK;
   DeviceClient? _deviceClient;
   Future<SharedPreferences>? _sharedPreferences =
       SharedPreferences.getInstance();
@@ -43,6 +45,8 @@ class ServiceInjector {
   NostrpayLogger get nostrpayLogger => _nostrpayLogger ??= NostrpayLogger();
 
   NWCNdkSDK get nwcNdkSDK => _nwcNdkSDK ??= NWCNdkSDK();
+
+  EcashCdkSDK get ecashCdkSDK => _ecashCdkSDK ??= EcashCdkSDK();
 
   AnalyticsService get analyticsService =>
       _analyticsService ??= AnalyticsService();

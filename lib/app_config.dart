@@ -42,4 +42,6 @@ class AppConfig {
     _logger.info('Using workingDir: $path');
     return path;
   }
+
+  static const String ecashMintUrl = 'https://mint.cubabitcoin.org';
 }

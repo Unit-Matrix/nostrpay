@@ -1,4 +1,6 @@
 PODS:
+  - cdk_flutter (0.0.1):
+    - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -46,6 +48,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - cdk_flutter (from `.symlinks/plugins/cdk_flutter/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_app_group_directory (from `.symlinks/plugins/flutter_app_group_directory/ios`)
@@ -70,6 +73,8 @@ SPEC REPOS:
     - PostHog
 
 EXTERNAL SOURCES:
+  cdk_flutter:
+    :path: ".symlinks/plugins/cdk_flutter/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
@@ -106,6 +111,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  cdk_flutter: 2491a6dbeea411a321ac046651ed6c73c13a40b8
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_app_group_directory: 55b5362007d1c0cb45dc1dd1e94f67d615f45a6b

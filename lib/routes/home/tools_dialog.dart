@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nostr_pay_kids/component_library/component_library.dart';
+import 'package:nostr_pay_kids/cubit/ecash/ecash_cubit.dart';
+import 'package:nostr_pay_kids/cubit/ecash/ecash_state.dart';
+import 'package:nostr_pay_kids/routes/offline_cash/offline_cash_explanation_screen.dart';
+import 'package:nostr_pay_kids/routes/offline_cash/ecash_home_screen.dart';
 
 class ToolsDialog extends StatelessWidget {
   const ToolsDialog({super.key});
@@ -47,7 +52,7 @@ class ToolsDialog extends StatelessWidget {
                       color: AppColors.success,
                       onTap: () {
                         Navigator.pop(context);
-                        // TODO: Navigate to Ecash screen
+                        _handleEcashToolTap(context);
                       },
                     ),
                     _buildToolItem(
@@ -116,6 +121,84 @@ class ToolsDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _handleEcashToolTap(BuildContext context) async {
+    final ecashCubit = context.read<EcashCubit>();
+    final currentState = ecashCubit.state;
+
+    // Check if user has any Ecash items (used or unused)
+    final hasEcashItems = currentState.ecashItems.isNotEmpty;
+
+    if (hasEcashItems) {
+      // User has Ecash items, navigate directly to EcashHomeScreen
+      // Ensure CDK is initialized first
+      if (currentState.initializationState !=
+          EcashInitializationState.initialized) {
+        final navigator = Navigator.of(context);
+        final loaderRoute = createLoaderRoute(context);
+        navigator.push(loaderRoute);
+
+        try {
+          await ecashCubit.initialize();
+          if (context.mounted) {
+            navigator.pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const EcashHomeScreen(),
+              ),
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            showErrorDialog(
+              context,
+              title: 'Failed to initialize Ecash',
+              message: 'Error: $e',
+            );
+          }
+        } finally {
+          if (context.mounted) {
+            navigator.removeRoute(loaderRoute);
+          }
+        }
+      } else {
+        // Already initialized, navigate directly
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const EcashHomeScreen(),
+          ),
+        );
+      }
+    } else {
+      // User is new, show explanation screen and initialize
+      final navigator = Navigator.of(context);
+      final loaderRoute = createLoaderRoute(context);
+      navigator.push(loaderRoute);
+
+      try {
+        await ecashCubit.initialize();
+        if (context.mounted) {
+          navigator.pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const OfflineCashExplanationScreen(),
+            ),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          showErrorDialog(
+            context,
+            title: 'Failed to initialize Ecash',
+            message: 'Error: $e',
+          );
+        }
+      } finally {
+        if (context.mounted) {
+          navigator.removeRoute(loaderRoute);
+        }
+      }
+    }
   }
 
   static Widget _buildToolItem({

@@ -64,6 +64,7 @@ lib/config/app_secrets.dart
 
 # Legal and internal documentation (not for public repository)
 md/
+package_docs/
 
 # Build and development scripts (internal tools)
 generate-symbols.sh

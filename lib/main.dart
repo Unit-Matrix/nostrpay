@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:nostr_pay_kids/cubit/account/account_cubit.dart';
 import 'package:nostr_pay_kids/cubit/account/onboarding_preferences.dart';
 import 'package:nostr_pay_kids/cubit/connectivity/connectivity_cubit.dart';
+import 'package:nostr_pay_kids/cubit/ecash/ecash_cubit.dart';
 import 'package:nostr_pay_kids/cubit/input/input_cubit.dart';
 import 'package:nostr_pay_kids/cubit/payments/payments_cubit.dart';
 import 'package:nostr_pay_kids/cubit/sdk_connectivity/sdk_connectivity_cubit.dart';
@@ -86,6 +87,13 @@ void main() async {
             BlocProvider<CurrencyCubit>(
               create: (BuildContext context) =>
                   CurrencyCubit(injector.nwcNdkSDK),
+            ),
+            BlocProvider<EcashCubit>(
+              create: (BuildContext context) => EcashCubit(
+                ecashCdkSDK: injector.ecashCdkSDK,
+                credentialsManager: injector.credentialsManager,
+                nwcNdkSDK: injector.nwcNdkSDK,
+              ),
             ),
           ],
           child: const UserApp(),
