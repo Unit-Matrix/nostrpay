@@ -8,7 +8,6 @@ final ThemeData appLightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: AppColors.primary,
   scaffoldBackgroundColor: AppColors.background,
-  fontFamily: 'ComicNeue',
   colorScheme: ColorScheme.light(
     primary: AppColors.primary,
     secondary: AppColors.secondary,
@@ -172,24 +171,22 @@ final ThemeData appLightTheme = ThemeData(
           ),
         ],
       ),
-      actionButtonContainer:
-          (Color color) => BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
-            border: Border.all(color: color.withOpacity(0.3), width: 2),
+      actionButtonContainer: (Color color) => BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(AppSizes.radiusSmall),
+        border: Border.all(color: color.withOpacity(0.3), width: 2),
+      ),
+      primaryButtonContainer: (Color color) => BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
-      primaryButtonContainer:
-          (Color color) => BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(AppSizes.radiusMedium),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+        ],
+      ),
     ),
   ],
 );

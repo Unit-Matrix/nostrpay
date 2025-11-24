@@ -1,7 +1,7 @@
 name: nostr_pay_kids
 description: "A new Flutter project."
 publish_to: "none"
-version: 1.0.1+9
+version: 1.0.2+10
 
 environment:
   sdk: ">=3.6.1 <4.0.0"
@@ -62,23 +62,6 @@ flutter:
 
   assets:
     - assets/mascot/
-
-  fonts:
-    - family: ComicNeue
-      fonts:
-        - asset: assets/fonts/ComicNeue-Regular.ttf
-        - asset: assets/fonts/ComicNeue-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/ComicNeue-Italic.ttf
-          style: italic
-        - asset: assets/fonts/ComicNeue-BoldItalic.ttf
-          weight: 700
-          style: italic
-        - asset: assets/fonts/ComicNeue-Light.ttf
-          weight: 300
-        - asset: assets/fonts/ComicNeue-LightItalic.ttf
-          weight: 300
-          style: italic
 
 flutter_native_splash:
   color: "#FFE274"
