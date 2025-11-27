@@ -1,0 +1,28 @@
+name: Nostrpay
+identifier: org.nostrpay.app
+summary: Bitcoin made simple for kids!
+description: |
+  Welcome to Nostrpay, the safe and educational learning platform for kids to discover Bitcoin. Our app is designed to bridge the gap between digital currency education and hands-on learning, offering a controlled environment where children can explore Bitcoin concepts under full parental supervision.
+
+  What kids can learn with Nostrpay:
+
+  - Discover Bitcoin fundamentals by connecting to a parent's Lightning wallet using the Nostr Wallet Connect protocol (educational learning activity)
+
+  - Learn about Bitcoin through interactive lessons, daily educational tips, and child-friendly learning content
+
+  - Practice saving and budgeting concepts with sats (Bitcoin's smallest unit) through hands-on learning, with budget tracking and spending limits set by parents for educational purposes
+
+  - Understand digital transactions through supervised practice activities, with all learning exercises monitored and controlled by parents
+
+  Nostrpay makes learning about Bitcoin engaging and accessible, turning digital currency education into a fun, hands-on experience. Whether your child is just starting to learn about digital money or already curious about cryptocurrency concepts, Nostrpay provides an educational learning interface designed specifically for kids, with complete parental oversight at every step of the learning journey.
+
+  Nostrpay is an educational learning tool that interfaces with a parent-controlled Lightning wallet for teaching and learning purposes. This ensures a safe educational environment where children can explore Bitcoin concepts while you maintain complete control over all wallet operations and learning activities. All funds are held exclusively in your parent's wallet, and we do not store private keys, custody funds, or provide financial services. Nostrpay is purely an educational learning platform designed to teach children about Bitcoin.
+homepage: https://www.nostrpay.org/
+license: MIT
+tags: nwc ecash cashu nostr lightning-network kids education freedom-tech
+blossom_servers:
+  - https://cdn.zapstore.dev
+  - https://blossom.band
+assets:
+  - build/app/outputs/flutter-apk/app-release.apk
+icon: android/app/src/main/ic_launcher-playstore.png
